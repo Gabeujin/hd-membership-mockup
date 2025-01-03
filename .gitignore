@@ -1,0 +1,88 @@
+# ----------------------
+# Node.js 관련 (React)
+# ----------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# React 빌드 결과물
+/build
+
+# ----------------------
+# Java 및 Spring Boot 관련
+# ----------------------
+# Gradle 빌드 파일 및 캐시
+.gradle/
+build/
+*.lock
+
+# IntelliJ IDEA 설정
+*.iml
+.idea/
+*.ipr
+*.iws
+
+# Eclipse 설정
+.project
+.classpath
+.settings/
+.apt_generated/
+.factorypath
+
+# 빌드 결과물
+target/
+out/
+*.jar
+*.war
+*.ear
+
+# 테스트 파일
+test-output/
+test-results/
+*.log
+
+# ----------------------
+# Spring Boot 속성 파일
+# ----------------------
+# 환경별 속성 파일
+application*.yml
+application*.yaml
+application*.properties
+
+# ----------------------
+# 데이터베이스 관련
+# ----------------------
+# H2 Database 파일
+*.h2.db
+*.mv.db
+*.trace.db
+
+# SQLite 파일
+*.sqlite
+*.db
+
+# ----------------------
+# CI/CD 및 기타 설정
+# ----------------------
+# GitHub Actions 로그
+.github/workflows/*_logs/
+.github/workflows/*_results/
+
+# Swagger 문서 생성 파일
+swagger-ui.html
+*.json
+*.yaml
+
+# ----------------------
+# 시스템 파일
+# ----------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
