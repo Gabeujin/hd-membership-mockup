@@ -3,9 +3,9 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - feature/*   # Feature 브랜치
-      - develop     # Develop 브랜치
-      - main        # Main 브랜치
+      - feature/*
+      - develop
+      - main
   pull_request:
     branches:
       - develop
@@ -26,6 +26,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x ./gradlew
+
       - name: Build and Test
         run: |
           ./gradlew clean build
@@ -45,10 +48,17 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x ./gradlew
+
       - name: Build and Test
         run: |
           ./gradlew clean build
           ./gradlew test
+
+      - name: Notify Slack (Optional)
+        if: failure()
+        run: echo "Notify Slack about the failed build."
 
   main-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -64,7 +74,14 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x ./gradlew
+
       - name: Build and Test
         run: |
           ./gradlew clean build
           ./gradlew test
+
+      - name: Notify Team (Optional)
+        if: failure()
+        run: echo "Send email or create GitHub Issue for failed build."
