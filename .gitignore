@@ -21,7 +21,6 @@ yarn-error.log*
 .gradle
 build/
 *.lock
-!gradle/wrapper/gradle-wrapper.jar
 
 # IntelliJ IDEA 설정
 *.iml
