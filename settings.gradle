@@ -1,0 +1,3 @@
+rootProject.name = 'hd-membership-mockup'
+include 'backend'
+//include 'frontend'

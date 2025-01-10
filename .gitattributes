@@ -1,0 +1,29 @@
+# Gradle Wrapper
+/gradlew text eol=lf
+*.bat text eol=crlf
+*.jar binary
+
+# Text files
+*.java text
+*.xml text
+*.yml text
+*.yaml text
+*.json text
+*.css text
+*.html text
+*.js text
+*.md text
+*.sh text eol=lf
+
+# Image files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+
+# IDE 설정 파일
+*.iml text
+*.ipr text
+*.iws text
