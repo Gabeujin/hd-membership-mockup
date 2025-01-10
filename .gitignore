@@ -18,15 +18,18 @@ yarn-error.log*
 # Java 및 Spring Boot 관련
 # ----------------------
 # Gradle 빌드 파일 및 캐시
-.gradle/
+.gradle
 build/
 *.lock
+!gradle/wrapper/gradle-wrapper.jar
 
 # IntelliJ IDEA 설정
 *.iml
 .idea/
 *.ipr
 *.iws
+!**/src/main/**/out/
+!**/src/test/**/out/
 
 # Eclipse 설정
 .project
@@ -86,3 +89,27 @@ swagger-ui.html
 Thumbs.db
 *.swp
 *.swo
+
+# ----------------------
+# STS 관련 설정
+# ----------------------
+.apt_generated
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# ----------------------
+# NetBeans 관련 설정
+# ----------------------
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ----------------------
+# VS Code 관련 설정
+# ----------------------
+.vscode/
