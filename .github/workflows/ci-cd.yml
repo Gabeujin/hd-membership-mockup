@@ -1,0 +1,87 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - feature/*
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  feature-test:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/feature/')
+    name: Test Feature Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x ./gradlew
+
+      - name: Build and Test
+        run: |
+          ./gradlew clean build
+          ./gradlew test
+
+  develop-test:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    name: Test Develop Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x ./gradlew
+
+      - name: Build and Test
+        run: |
+          ./gradlew clean build
+          ./gradlew test
+
+      - name: Notify Slack (Optional)
+        if: failure()
+        run: echo "Notify Slack about the failed build."
+
+  main-test:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    name: Final Test on Main Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x ./gradlew
+
+      - name: Build and Test
+        run: |
+          ./gradlew clean build
+          ./gradlew test
+
+      - name: Notify Team (Optional)
+        if: failure()
+        run: echo "Send email or create GitHub Issue for failed build."
