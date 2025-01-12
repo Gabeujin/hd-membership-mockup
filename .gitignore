@@ -78,8 +78,6 @@ application*.properties
 
 # Swagger 문서 생성 파일
 swagger-ui.html
-*.json
-*.yaml
 
 # ----------------------
 # 시스템 파일

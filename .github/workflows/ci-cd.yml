@@ -29,10 +29,27 @@ jobs:
       - name: Grant execute permission for Gradle Wrapper
         run: chmod +x ./gradlew
 
-      - name: Build and Test
+      - name: Build and Test Backend
         run: |
           ./gradlew clean build
-          ./gradlew test
+
+      # Node.js 설치
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      # Dependencies 설치
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: |
+          npm install
+
+      # 빌드 및 테스트 실행
+      - name: Build and Test Frontend
+        working-directory: ./frontend
+        run: |
+          npm run build
 
   develop-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
@@ -51,14 +68,27 @@ jobs:
       - name: Grant execute permission for Gradle Wrapper
         run: chmod +x ./gradlew
 
-      - name: Build and Test
+      - name: Build and Test Backend
         run: |
           ./gradlew clean build
-          ./gradlew test
 
-      - name: Notify Slack (Optional)
-        if: failure()
-        run: echo "Notify Slack about the failed build."
+      # Node.js 설치
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      # Dependencies 설치
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: |
+          npm install
+
+      # 빌드 및 테스트 실행
+      - name: Build and Test Frontend
+        working-directory: ./frontend
+        run: |
+          npm run build
 
   main-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -80,8 +110,21 @@ jobs:
       - name: Build and Test
         run: |
           ./gradlew clean build
-          ./gradlew test
 
-      - name: Notify Team (Optional)
-        if: failure()
-        run: echo "Send email or create GitHub Issue for failed build."
+      # Node.js 설치
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      # Dependencies 설치
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: |
+          npm install
+
+      # 빌드 및 테스트 실행
+      - name: Build and Test Frontend
+        working-directory: ./frontend
+        run: |
+          npm run build
