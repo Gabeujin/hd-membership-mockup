@@ -12,76 +12,51 @@ on:
       - main
 
 jobs:
-  feature-test:
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/feature/')
-    name: Test Feature Branch
+  test:
+    name: Build and Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: [feature, develop, main]
     steps:
-      - name: Check out code
+      # 조건부 실행: 브랜치 확인
+      - name: Check branch and set execution
+        run: |
+          echo "Running on branch: ${{ matrix.branch }}"
+
+      # 소스 코드 체크아웃
+      - name: Checkout code
         uses: actions/checkout@v4
 
+      # JDK 21 설정
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
           distribution: 'temurin'
 
+      # Gradle 권한 부여
       - name: Grant execute permission for Gradle Wrapper
         run: chmod +x ./gradlew
 
-      - name: Build and Test
+      # Backend 빌드 및 테스트
+      - name: Build and Test Backend
         run: |
           ./gradlew clean build
-          ./gradlew test
 
-  develop-test:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-    name: Test Develop Branch
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
+      # Node.js 설치
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          node-version: '22'
 
-      - name: Grant execute permission for Gradle Wrapper
-        run: chmod +x ./gradlew
-
-      - name: Build and Test
+      # Frontend 의존성 설치
+      - name: Install Frontend Dependencies
         run: |
-          ./gradlew clean build
-          ./gradlew test
+          npm install
 
-      - name: Notify Slack (Optional)
-        if: failure()
-        run: echo "Notify Slack about the failed build."
-
-  main-test:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    name: Final Test on Main Branch
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
-      - name: Grant execute permission for Gradle Wrapper
-        run: chmod +x ./gradlew
-
-      - name: Build and Test
+      # Frontend 빌드 및 테스트
+      - name: Build and Test Frontend
         run: |
-          ./gradlew clean build
-          ./gradlew test
-
-      - name: Notify Team (Optional)
-        if: failure()
-        run: echo "Send email or create GitHub Issue for failed build."
+          npm run build
+          npm test
