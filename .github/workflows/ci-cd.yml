@@ -12,34 +12,23 @@ on:
       - main
 
 jobs:
-  test:
-    name: Build and Test
+  feature-test:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/feature/')
+    name: Test Feature Branch
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        branch: [feature, develop, main]
     steps:
-      # 조건부 실행: 브랜치 확인
-      - name: Check branch and set execution
-        run: |
-          echo "Running on branch: ${{ matrix.branch }}"
-
-      # 소스 코드 체크아웃
-      - name: Checkout code
+      - name: Check out code
         uses: actions/checkout@v4
 
-      # JDK 21 설정
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      # Gradle 권한 부여
       - name: Grant execute permission for Gradle Wrapper
         run: chmod +x ./gradlew
 
-      # Backend 빌드 및 테스트
       - name: Build and Test Backend
         run: |
           ./gradlew clean build
@@ -50,12 +39,88 @@ jobs:
         with:
           node-version: '22'
 
-      # Frontend 의존성 설치
-      - name: Install Frontend Dependencies
+      # Dependencies 설치
+      - name: Install dependencies
         run: |
           npm install
 
-      # Frontend 빌드 및 테스트
+      # 빌드 및 테스트 실행
+      - name: Build and Test Frontend
+        run: |
+          npm run build
+          npm test
+
+  develop-test:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    name: Test Develop Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x ./gradlew
+
+      - name: Build and Test Backend
+        run: |
+          ./gradlew clean build
+
+      # Node.js 설치
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      # Dependencies 설치
+      - name: Install dependencies
+        run: |
+          npm install
+
+      # 빌드 및 테스트 실행
+      - name: Build and Test Frontend
+        run: |
+          npm run build
+          npm test
+
+  main-test:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    name: Final Test on Main Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x ./gradlew
+
+      - name: Build and Test
+        run: |
+          ./gradlew clean build
+
+      # Node.js 설치
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      # Dependencies 설치
+      - name: Install dependencies
+        run: |
+          npm install
+
+      # 빌드 및 테스트 실행
       - name: Build and Test Frontend
         run: |
           npm run build
