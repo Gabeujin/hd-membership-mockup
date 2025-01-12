@@ -25,8 +25,6 @@ function LogoLink({href,src,alt}: {href: string, src: string, alt: string}){
 }
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
       <div>
