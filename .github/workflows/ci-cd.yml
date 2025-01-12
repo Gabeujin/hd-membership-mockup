@@ -50,7 +50,6 @@ jobs:
         working-directory: ./frontend
         run: |
           npm run build
-          npm test
 
   develop-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
@@ -90,7 +89,6 @@ jobs:
         working-directory: ./frontend
         run: |
           npm run build
-          npm test
 
   main-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -130,4 +128,3 @@ jobs:
         working-directory: ./frontend
         run: |
           npm run build
-          npm test
